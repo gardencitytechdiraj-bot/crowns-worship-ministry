@@ -215,8 +215,8 @@ h2 { font-size: clamp(2.8rem, 5.5vw, 6rem); font-weight: 800; letter-spacing: -.
 .donation-symbol { align-items: center; border: 1px solid var(--coral); border-radius: 50%; color: var(--coral); display: inline-flex; font-size: 1.45rem; height: 2.1rem; justify-content: center; line-height: 1; transition: background var(--dur-2) ease, color var(--dur-2) ease, transform var(--dur-2) var(--ease-out-quart); width: 2.1rem; }
 .donation-trigger:hover .donation-symbol, .donation-card[open] .donation-symbol { background: var(--coral); color: var(--paper); transform: rotate(45deg); }
 .donation-details { border-top: 1px solid var(--line-light); margin-top: 1.25rem; padding-top: 1.25rem; }
-.qr-frame { background: var(--white); margin: 0 auto; padding: .8rem; width: min(100%, 18rem); }
-.qr-frame img { aspect-ratio: 1; object-fit: cover; width: 100%; }
+.qr-frame { background: var(--white); margin: 0 auto; padding: .8rem; width: min(100%, 19rem); }
+.qr-frame img { display: block; height: auto; object-fit: contain; width: 100%; }
 .bank-details { display: grid; gap: .16rem; margin-top: 1rem; }
 .bank-details span { color: rgba(11,11,18,.65); font-size: .62rem; letter-spacing: .11em; }
 .bank-details strong { font-family: var(--font-display); font-size: 1.3rem; letter-spacing: -.04em; }
@@ -336,7 +336,7 @@ h2 { font-size: clamp(2.8rem, 5.5vw, 6rem); font-weight: 800; letter-spacing: -.
   .donation-trigger-title { font-size: 1.7rem; }
   .donation-visual { height: 9rem; }
   .connect-visual { height: 20rem; }
-  .qr-frame { width: min(100%, 15rem); }
+  .qr-frame { width: min(100%, 17rem); }
   .footer-top { align-items: start; flex-wrap: wrap; }
   .footer-top p { order: 3; width: 100%; }
   .footer-bottom { display: grid; gap: .45rem; }
