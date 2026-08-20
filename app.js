@@ -8,7 +8,7 @@ const translations = {
     ministryKicker: "What we do", ministryTitle: "Different doorways.\nOne heartbeat.", ministryIntro: "We build the culture, train the people, and serve the places that make a movement last.",
     programChurchesLabel: "Churches", programChurchesTitle: "Worship environment support", programChurchesBody: "Helping local churches build healthy, honest, and powerful worship cultures.", programTrainingLabel: "Training", programTrainingTitle: "Holy Roar worship training", programTrainingBody: "Practical, Christ-centered training for worship leaders and local teams.", programOutreachLabel: "Outreach", programOutreachTitle: "Baby Basics outreach", programOutreachBody: "Newborn essentials and mother supplies for families who need a little more room to breathe.", programYouthLabel: "Youth", programYouthTitle: "A movement for the next generation", programYouthBody: "Investing in young people who will lead their churches, communities, and nation for decades to come.",
     reachKicker: "Our reach", reachTitle: "The song travels farther than the room.", reachBody: "From our base in Pokhara, worship teams travel outward across Nepal — carrying training, friendship, and a faith that meets people where they are.", reachItemOne: "Pokhara → home base", reachItemTwo: "Mountain towns → training", reachItemThree: "Everywhere → belonging", reachImageLabel: "Holy Roar / 2026", reachMetricOne: "provinces covered", reachMetricTwo: "training events", reachMetricThree: "lives touched",
-    galleryKicker: "The journey", galleryTitle: "People are the\nbeautiful proof.", galleryIntro: "A few frames from the rooms, roads, and relationships that keep this ministry moving.", galleryFootnote: "Tap any frame to step closer.",
+    galleryKicker: "The journey", galleryTitle: "People are the\nbeautiful proof.", galleryIntro: "A few frames from the rooms, roads, and relationships that keep this ministry moving.", galleryFootnote: "Hover or press and hold any frame to see it in color.",
     giveKicker: "Give", giveTitle: "Your generosity carries the song.", giveBody: "Your giving sends worship teams across Nepal, trains the next generation of leaders, and helps families in need. Every contribution makes the next yes possible.", givePointOne: "Support a training day", givePointTwo: "Equip a worship team", givePointThree: "Serve a family with dignity", donationLabel: "Direct giving", donationTitle: "Support the mission", donationTriggerNote: "Tap to view giving details", donationNote: "If you are giving from outside Nepal, message us and we will help you find the right way to join in.",
     connectKicker: "Connect", connectTitle: "Come as you are.\nStay for the story.", connectBody: "Whether you want to join a training, partner with the outreach, or simply learn more, we would love to hear from you.", connectButton: "Message on WhatsApp", socialLabel: "Follow the journey", contactLabel: "Contact directly", footerStatement: "Raising worship and reaching communities across the nation.", footerLocation: "Pokhara, Nepal", footerScripture: "“Yet you are holy, enthroned on the praises of Israel.” · Psalm 22:3"
   },
@@ -20,7 +20,7 @@ const translations = {
     ministryKicker: "हामी के गर्छौं", ministryTitle: "धेरै ढोका।\nएउटै मुटु।", ministryIntro: "हामी संस्कृति बनाउँछौं, मानिसहरूलाई तयार गर्छौं, र आन्दोलन टिकाइराख्ने ठाउँहरूमा सेवा गर्छौं।",
     programChurchesLabel: "चर्च", programChurchesTitle: "आराधना वातावरण सहयोग", programChurchesBody: "स्थानीय चर्चहरूलाई स्वस्थ, इमानदार र शक्तिशाली आराधना संस्कार बनाउन सहयोग।", programTrainingLabel: "तालिम", programTrainingTitle: "Holy Roar आराधना तालिम", programTrainingBody: "आराधना अगुवा र स्थानीय टोलीका लागि व्यावहारिक, ख्रीष्ट-केन्द्रित तालिम।", programOutreachLabel: "सेवा", programOutreachTitle: "Baby Basics सेवा", programOutreachBody: "थप सहयोग चाहिने परिवारहरूका लागि नवजात शिशु सामग्री र आमाका आवश्यक सामान।", programYouthLabel: "युवा", programYouthTitle: "नयाँ पुस्ताको आन्दोलन", programYouthBody: "आफ्ना चर्च, समुदाय र राष्ट्रको नेतृत्व गर्ने युवाहरूमा लगानी।",
     reachKicker: "हाम्रो पहुँच", reachTitle: "गीत कोठाभन्दा धेरै टाढा पुग्छ।", reachBody: "पोखराको आधारबाट आराधना टोलीहरू नेपालभरि फैलिन्छन् — तालिम, मित्रता र मानिस जहाँ छन् त्यहीँ भेट्ने विश्वास बोकेर।", reachItemOne: "पोखरा → हाम्रो आधार", reachItemTwo: "पहाडी सहरहरू → तालिम", reachItemThree: "सबैतिर → अपनत्व", reachImageLabel: "Holy Roar / २०२६", reachMetricOne: "समेटिएका प्रदेश", reachMetricTwo: "तालिम कार्यक्रम", reachMetricThree: "छोइएका जीवन",
-    galleryKicker: "यात्रा", galleryTitle: "मानिसहरू नै\nसुन्दर प्रमाण हुन्।", galleryIntro: "यस सेवकाइलाई अघि बढाइरहने कोठा, बाटो र सम्बन्धका केही झलक।", galleryFootnote: "कुनै पनि तस्बिर छानेर नजिकबाट हेर्नुहोस्।",
+    galleryKicker: "यात्रा", galleryTitle: "मानिसहरू नै\nसुन्दर प्रमाण हुन्।", galleryIntro: "यस सेवकाइलाई अघि बढाइरहने कोठा, बाटो र सम्बन्धका केही झलक।", galleryFootnote: "रङ्गीन हेर्न कुनै पनि तस्बिरमा होभर गर्नुहोस् वा थिचिराख्नुहोस्।",
     giveKicker: "दान", giveTitle: "तपाईंको उदारताले गीत बोक्छ।", giveBody: "तपाईंको दानले नेपालभरि आराधना टोली पठाउँछ, नयाँ पुस्ताका अगुवाहरूलाई तालिम दिन्छ, र आवश्यकतामा रहेका परिवारहरूलाई सहयोग गर्छ। हरेक योगदानले अर्को ‘हुन्छ’ सम्भव बनाउँछ।", givePointOne: "तालिमको एक दिन सहयोग", givePointTwo: "आराधना टोली तयार", givePointThree: "परिवारलाई सम्मानसहित सेवा", donationLabel: "प्रत्यक्ष दान", donationTitle: "मिशनमा सहयोग गर्नुहोस्", donationTriggerNote: "दान विवरण हेर्नुहोस्", donationNote: "नेपाल बाहिरबाट सहयोग गर्दै हुनुहुन्छ भने हामीलाई सन्देश पठाउनुहोस् — सही माध्यम खोज्न हामी सहयोग गर्नेछौं।",
     connectKicker: "सम्पर्क", connectTitle: "तपाईं जस्तो हुनुहुन्छ\nत्यस्तै आउनुहोस्।", connectBody: "तालिममा जोडिन, सेवकाइमा साझेदारी गर्न, वा अझ धेरै जान्न चाहनुहुन्छ भने — हामी तपाईंको सन्देश सुन्न चाहन्छौं।", connectButton: "WhatsApp मा सन्देश", socialLabel: "यात्रा पछ्याउनुहोस्", contactLabel: "सिधै सम्पर्क", footerStatement: "आराधना उठाउँदै र राष्ट्रभरि समुदायहरूमा पुग्दै।", footerLocation: "पोखरा, नेपाल", footerScripture: "“तपाईं पवित्र हुनुहुन्छ, इस्राएलका स्तुतिहरूमाथि विराजमान।” · भजनसंग्रह २२:३"
   }
@@ -152,10 +152,33 @@ const moveLightbox = (direction) => {
   renderGalleryItem(galleryItems[nextIndex], nextIndex);
 };
 
-galleryItems.forEach((item, index) => item.addEventListener('click', () => {
-  lastFocusedGalleryItem = item;
-  openLightbox(item, index);
-}));
+galleryItems.forEach((item, index) => {
+  let touchPressTimer = 0;
+
+  // A short tap still opens the lightbox. A press-and-hold previews the
+  // original color treatment until the finger leaves the frame.
+  item.addEventListener('pointerdown', (event) => {
+    if (event.pointerType !== 'touch') return;
+    window.clearTimeout(touchPressTimer);
+    touchPressTimer = window.setTimeout(() => item.classList.add('is-colorful'), 160);
+  });
+
+  const endTouchPreview = (event) => {
+    if (event.pointerType && event.pointerType !== 'touch') return;
+    window.clearTimeout(touchPressTimer);
+    touchPressTimer = 0;
+    item.classList.remove('is-colorful');
+  };
+
+  item.addEventListener('pointerup', endTouchPreview);
+  item.addEventListener('pointercancel', endTouchPreview);
+  item.addEventListener('pointerleave', endTouchPreview);
+
+  item.addEventListener('click', () => {
+    lastFocusedGalleryItem = item;
+    openLightbox(item, index);
+  });
+});
 lightboxPrevious?.addEventListener('click', () => moveLightbox(-1));
 lightboxNext?.addEventListener('click', () => moveLightbox(1));
 lightboxClose?.addEventListener('click', closeLightbox);
