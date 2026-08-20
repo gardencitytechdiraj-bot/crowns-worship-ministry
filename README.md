@@ -1,3 +1,17 @@
 # Crown's Worship Ministry
 
-A refined, bilingual worship ministry website for Crown's Worship Ministry in Pokhara, Nepal.
+Refined responsive website for Crown's Worship Ministry.
+
+## Local development
+
+```bash
+pnpm install
+pnpm dev
+```
+
+## Production build
+
+```bash
+pnpm run build
+```
+
