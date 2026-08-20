@@ -83,6 +83,16 @@ window.addEventListener('scroll', requestViewportState, { passive: true });
 window.addEventListener('resize', requestViewportState, { passive: true });
 updateViewportState();
 
+const heroMedia = document.querySelector('.hero-media');
+const heroYoutube = document.querySelector('.hero-youtube');
+if (heroMedia && heroYoutube && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  let revealTimer = window.setTimeout(() => heroMedia.classList.add('is-youtube-ready'), 6000);
+  heroYoutube.addEventListener('load', () => {
+    window.clearTimeout(revealTimer);
+    revealTimer = window.setTimeout(() => heroMedia.classList.add('is-youtube-ready'), 5200);
+  }, { once: true });
+}
+
 const revealNodes = document.querySelectorAll('.reveal');
 if ('IntersectionObserver' in window) {
   const revealObserver = new IntersectionObserver((entries) => {
