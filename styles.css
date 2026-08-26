@@ -171,7 +171,7 @@ h2 { font-size: clamp(2.8rem, 5.5vw, 6rem); font-weight: 800; letter-spacing: -.
 .reach-list span { color: var(--gold); font-size: .65rem; letter-spacing: .1em; }
 .reach-list strong { font-family: var(--font-display); font-size: .84rem; font-weight: 600; }
 .reach-visual { position: relative; }
-.reach-image { height: 31rem; overflow: hidden; position: relative; transform: rotate(2deg); }
+.reach-image { height: 31rem; overflow: hidden; position: relative; transform: none; }
 .reach-image img { height: 100%; object-fit: cover; object-position: 53% center; width: 100%; }
 .reach-image::after { display: none; }
 .reach-image-label { bottom: 1rem; display: flex; font-size: .65rem; justify-content: space-between; left: 1.3rem; letter-spacing: .12em; position: absolute; right: 1.3rem; text-transform: uppercase; }
