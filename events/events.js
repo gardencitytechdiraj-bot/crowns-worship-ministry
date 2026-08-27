@@ -202,7 +202,7 @@ registrationForm.addEventListener('submit', async (event) => {
   if (String(values.phone || '').replace(/\D/g, '').length < 7) { errorBox.textContent = text('invalidPhone'); errorBox.hidden = false; return; }
   submit.disabled = true; submit.setAttribute('aria-busy', 'true'); submit.querySelector('span').textContent = text('busy'); errorBox.hidden = true;
   try {
-    const payload = await request('/api/register', { method: 'POST', body: JSON.stringify({ ...values, language: state.language }) });
+    const payload = await request('/api/events/register', { method: 'POST', body: JSON.stringify({ ...values, language: state.language }) });
     const result = getRegistrationResult(payload);
     registrationDialog.close();
     openConfirmation(result, values);
