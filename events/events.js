@@ -2,14 +2,20 @@ import QRCode from 'qrcode';
 
 const copy = {
   en: {
-    eyebrow: "Crown's Worship Ministry · Nepal", heroTitle: 'Make room for<br /><em>the next song.</em>', heroIntro: 'Gather in the room, learn together, and carry worship back to your people. Find an upcoming Crown\'s gathering and save your place.', heroLink: 'Explore gatherings', upNext: "What's next", eventsTitle: 'Gather at the source.', sectionNote: 'One place for every room, training day, and Holy Roar gathering.', liveNote: 'Registration is live', refresh: 'Refresh', emptyTitle: 'The next room is taking shape.', emptyBody: "No gatherings are open right now. Check back soon or follow Crown's for the next invitation.", closing: 'Worship is not a moment we attend.<br /><strong>It is a life we carry.</strong>', savePlace: 'Save your place', yourDetails: 'Your details', paymentDetails: 'Payment details', confirmPlace: 'Confirm my place', formFootnote: "Your phone number helps us prevent duplicate registrations. We will only use your details for this gathering.", placeSaved: 'Place saved', ticketTitle: 'See you in the room.', ticketIntro: 'Keep this ticket handy when you arrive. A copy of the code is your printable fallback.', ticketFor: 'Ticket for', qrFallback: 'If your camera cannot scan, show this code at check-in.', printTicket: 'Print ticket', registerAnother: 'Register someone else', nameLabel: 'Full name', phoneLabel: 'Mobile number', emailLabel: 'Email <small>(optional)</small>', districtLabel: 'District / city', churchLabel: 'Church / community <small>(optional)</small>', ageLabel: 'Age group <small>(optional)</small>', genderLabel: 'Gender <small>(optional)</small>', paymentRef: 'Payment reference <small>(optional)</small>', consent: "I agree to receive event updates from Crown's Worship Ministry.", free: 'Free', paid: 'Paid', full: 'Full', seats: (n) => `${n} seat${n === 1 ? '' : 's'} left`, fee: (amount, currency) => `${currency || 'NPR'} ${amount}`, paymentHint: (amount, currency) => `This is a paid gathering · ${currency || 'NPR'} ${amount}. Payment instructions will be shared after you register.`, fetchError: 'We could not load gatherings right now. Please refresh and try again.', submitError: 'We could not save your registration. Please check your details and try again.', busy: 'Saving your place…', noEvent: 'This gathering is no longer available.', invalidPhone: 'Please enter a valid mobile number.', genericError: 'Something went wrong. Please try again.'
+    eyebrow: "Crown's Worship Ministry · Nepal", heroTitle: 'Make room for<br /><em>the next song.</em>', heroIntro: 'Gather in the room, learn together, and carry worship back to your people. Find an upcoming Crown\'s gathering and save your place.', heroLink: 'Explore gatherings', upNext: "What's next", eventsTitle: 'Gather at the source.', sectionNote: 'One place for every room, training day, and Holy Roar gathering.', liveNote: 'Registration is live', refresh: 'Refresh', emptyTitle: 'The next room is taking shape.', emptyBody: "No gatherings are open right now. Check back soon or follow Crown's for the next invitation.", closing: 'Worship is not a moment we attend.<br /><strong>It is a life we carry.</strong>', savePlace: 'Save your place', yourDetails: 'Your details', paymentDetails: 'Payment details', confirmPlace: 'Confirm my place', formFootnote: "Your phone number helps us prevent duplicate registrations. We will only use your details for this gathering.", placeSaved: 'Place saved', ticketTitle: 'See you in the room.', ticketIntro: 'Keep this ticket handy when you arrive. A copy of the code is your printable fallback.', ticketFor: 'Ticket for', qrFallback: 'If your camera cannot scan, show this code at check-in.', printTicket: 'Print ticket', registerAnother: 'Register someone else', nameLabel: 'Full name', phoneLabel: 'Mobile number', emailLabel: 'Email <small>(optional)</small>', districtLabel: 'District / city', churchLabel: 'Church / community <small>(optional)</small>', ageLabel: 'Age group <small>(optional)</small>', genderLabel: 'Gender <small>(optional)</small>', paymentRef: 'Payment reference <small>(optional)</small>', consent: "I agree to receive event updates from Crown's Worship Ministry.", free: 'Free', paid: 'Paid', full: 'Full', seats: (n) => `${n} seat${n === 1 ? '' : 's'} left`, fee: (amount, currency) => `${currency || 'NPR'} ${amount}`, paymentHint: (amount, currency) => `This is a paid gathering · ${currency || 'NPR'} ${amount}. Payment instructions will be shared after you register.`, fetchError: 'We could not load gatherings right now. Please refresh and try again.', fallbackWarning: 'Live event details are temporarily unavailable. These starter gatherings are still available for registration. / प्रत्यक्ष कार्यक्रम विवरण अहिले अस्थायी रूपमा उपलब्ध छैन। यी प्रारम्भिक कार्यक्रमहरूमा अझै दर्ता गर्न सकिन्छ।', submitError: 'We could not save your registration right now. Please check your details and try again. / दर्ता अहिले सुरक्षित गर्न सकिएन। कृपया विवरण जाँचेर फेरि प्रयास गर्नुहोस्।', busy: 'Saving your place…', noEvent: 'This gathering is no longer available. / यो कार्यक्रम अब उपलब्ध छैन।', invalidPhone: 'Please enter a valid mobile number.', genericError: 'Something went wrong. Please try again.'
   },
   ne: {
-    eyebrow: 'Crown\'s Worship Ministry · नेपाल', heroTitle: 'अर्को गीतका लागि<br /><em>ठाउँ बनाउनुहोस्।</em>', heroIntro: 'सँगै भेला हुनुहोस्, सिक्नुहोस्, र आराधना आफ्नो समुदायमा लिएर जानुहोस्। आउँदै गरेको Crown\'s कार्यक्रम खोजेर आफ्नो ठाउँ सुरक्षित गर्नुहोस्।', heroLink: 'कार्यक्रमहरू हेर्नुहोस्', upNext: 'अब के हुँदैछ', eventsTitle: 'स्रोतमा भेला होऔं।', sectionNote: 'हरेक भेटघाट, तालिम दिन र Holy Roar कार्यक्रम एउटै ठाउँमा।', liveNote: 'दर्ता खुला छ', refresh: 'ताजा गर्नुहोस्', emptyTitle: 'अर्को कोठा तयार हुँदैछ।', emptyBody: 'अहिले कुनै कार्यक्रम खुला छैन। चाँडै फेरि हेर्नुहोस् वा अर्को निमन्त्रणाका लागि Crown\'s लाई पछ्याउनुहोस्।', closing: 'आराधना हामी सहभागी हुने क्षण मात्र होइन।<br /><strong>यो हामीले बोक्ने जीवन हो।</strong>', savePlace: 'आफ्नो ठाउँ सुरक्षित गर्नुहोस्', yourDetails: 'तपाईंको विवरण', paymentDetails: 'भुक्तानी विवरण', confirmPlace: 'मेरो ठाउँ पक्का गर्नुहोस्', formFootnote: 'तपाईंको फोन नम्बरले दोहोरो दर्ता रोक्न मद्दत गर्छ। तपाईंको विवरण यही कार्यक्रमका लागि मात्र प्रयोग हुनेछ।', placeSaved: 'ठाउँ सुरक्षित भयो', ticketTitle: 'कार्यक्रममा भेटौंला।', ticketIntro: 'आउँदा यो टिकट साथमा राख्नुहोस्। कोडको प्रति प्रिन्ट गर्न पनि सकिन्छ।', ticketFor: 'टिकट', qrFallback: 'क्यामेराले स्क्यान गर्न नसके चेक-इनमा यो कोड देखाउनुहोस्।', printTicket: 'टिकट प्रिन्ट गर्नुहोस्', registerAnother: 'अर्को व्यक्ति दर्ता गर्नुहोस्', nameLabel: 'पूरा नाम', phoneLabel: 'मोबाइल नम्बर', emailLabel: 'इमेल <small>(वैकल्पिक)</small>', districtLabel: 'जिल्ला / सहर', churchLabel: 'चर्च / समुदाय <small>(वैकल्पिक)</small>', ageLabel: 'उमेर समूह <small>(वैकल्पिक)</small>', genderLabel: 'लिङ्ग <small>(वैकल्पिक)</small>', paymentRef: 'भुक्तानी सन्दर्भ <small>(वैकल्पिक)</small>', consent: "Crown's Worship Ministry बाट कार्यक्रमसम्बन्धी सूचना पाउन म सहमत छु।", free: 'निःशुल्क', paid: 'शुल्क लाग्ने', full: 'भरियो', seats: (n) => `${n} सिट बाँकी`, fee: (amount, currency) => `${currency || 'NPR'} ${amount}`, paymentHint: (amount, currency) => `यो शुल्क लाग्ने कार्यक्रम हो · ${currency || 'NPR'} ${amount}। दर्तापछि भुक्तानी विवरण पठाइनेछ।`, fetchError: 'अहिले कार्यक्रमहरू लोड गर्न सकिएन। कृपया ताजा गरेर फेरि प्रयास गर्नुहोस्।', submitError: 'दर्ता सुरक्षित गर्न सकिएन। विवरण जाँचेर फेरि प्रयास गर्नुहोस्।', busy: 'ठाउँ सुरक्षित हुँदैछ…', noEvent: 'यो कार्यक्रम अब उपलब्ध छैन।', invalidPhone: 'कृपया मान्य मोबाइल नम्बर लेख्नुहोस्।', genericError: 'केही समस्या भयो। कृपया फेरि प्रयास गर्नुहोस्।'
+    eyebrow: 'Crown\'s Worship Ministry · नेपाल', heroTitle: 'अर्को गीतका लागि<br /><em>ठाउँ बनाउनुहोस्।</em>', heroIntro: 'सँगै भेला हुनुहोस्, सिक्नुहोस्, र आराधना आफ्नो समुदायमा लिएर जानुहोस्। आउँदै गरेको Crown\'s कार्यक्रम खोजेर आफ्नो ठाउँ सुरक्षित गर्नुहोस्।', heroLink: 'कार्यक्रमहरू हेर्नुहोस्', upNext: 'अब के हुँदैछ', eventsTitle: 'स्रोतमा भेला होऔं।', sectionNote: 'हरेक भेटघाट, तालिम दिन र Holy Roar कार्यक्रम एउटै ठाउँमा।', liveNote: 'दर्ता खुला छ', refresh: 'ताजा गर्नुहोस्', emptyTitle: 'अर्को कोठा तयार हुँदैछ।', emptyBody: 'अहिले कुनै कार्यक्रम खुला छैन। चाँडै फेरि हेर्नुहोस् वा अर्को निमन्त्रणाका लागि Crown\'s लाई पछ्याउनुहोस्।', closing: 'आराधना हामी सहभागी हुने क्षण मात्र होइन।<br /><strong>यो हामीले बोक्ने जीवन हो।</strong>', savePlace: 'आफ्नो ठाउँ सुरक्षित गर्नुहोस्', yourDetails: 'तपाईंको विवरण', paymentDetails: 'भुक्तानी विवरण', confirmPlace: 'मेरो ठाउँ पक्का गर्नुहोस्', formFootnote: 'तपाईंको फोन नम्बरले दोहोरो दर्ता रोक्न मद्दत गर्छ। तपाईंको विवरण यही कार्यक्रमका लागि मात्र प्रयोग हुनेछ।', placeSaved: 'ठाउँ सुरक्षित भयो', ticketTitle: 'कार्यक्रममा भेटौंला।', ticketIntro: 'आउँदा यो टिकट साथमा राख्नुहोस्। कोडको प्रति प्रिन्ट गर्न पनि सकिन्छ।', ticketFor: 'टिकट', qrFallback: 'क्यामेराले स्क्यान गर्न नसके चेक-इनमा यो कोड देखाउनुहोस्।', printTicket: 'टिकट प्रिन्ट गर्नुहोस्', registerAnother: 'अर्को व्यक्ति दर्ता गर्नुहोस्', nameLabel: 'पूरा नाम', phoneLabel: 'मोबाइल नम्बर', emailLabel: 'इमेल <small>(वैकल्पिक)</small>', districtLabel: 'जिल्ला / सहर', churchLabel: 'चर्च / समुदाय <small>(वैकल्पिक)</small>', ageLabel: 'उमेर समूह <small>(वैकल्पिक)</small>', genderLabel: 'लिङ्ग <small>(वैकल्पिक)</small>', paymentRef: 'भुक्तानी सन्दर्भ <small>(वैकल्पिक)</small>', consent: "Crown's Worship Ministry बाट कार्यक्रमसम्बन्धी सूचना पाउन म सहमत छु।", free: 'निःशुल्क', paid: 'शुल्क लाग्ने', full: 'भरियो', seats: (n) => `${n} सिट बाँकी`, fee: (amount, currency) => `${currency || 'NPR'} ${amount}`, paymentHint: (amount, currency) => `यो शुल्क लाग्ने कार्यक्रम हो · ${currency || 'NPR'} ${amount}। दर्तापछि भुक्तानी विवरण पठाइनेछ।`, fetchError: 'अहिले कार्यक्रमहरू लोड गर्न सकिएन। कृपया ताजा गरेर फेरि प्रयास गर्नुहोस्।', fallbackWarning: 'प्रत्यक्ष कार्यक्रम विवरण अहिले अस्थायी रूपमा उपलब्ध छैन। यी प्रारम्भिक कार्यक्रमहरूमा अझै दर्ता गर्न सकिन्छ। / Live event details are temporarily unavailable. These starter gatherings are still available for registration.', submitError: 'दर्ता अहिले सुरक्षित गर्न सकिएन। कृपया विवरण जाँचेर फेरि प्रयास गर्नुहोस्। / We could not save your registration right now. Please check your details and try again.', busy: 'ठाउँ सुरक्षित हुँदैछ…', noEvent: 'यो कार्यक्रम अब उपलब्ध छैन। / This gathering is no longer available.', invalidPhone: 'कृपया मान्य मोबाइल नम्बर लेख्नुहोस्।', genericError: 'केही समस्या भयो। कृपया फेरि प्रयास गर्नुहोस्।'
   }
 };
 
-const state = { language: 'en', events: [], selectedEvent: null };
+const fallbackEvents = [
+  { id: 'baby-basics-support', slug: 'baby-basics-support', title_en: 'Baby Basics Support', title_ne: 'शिशुका आधारभूत आवश्यकतामा सहयोग', description_en: 'A caring space for families to find practical baby supplies, encouragement, and community support.', description_ne: 'शिशुका आधारभूत सामग्री, हौसला र समुदायको सहयोग पाउन परिवारहरूका लागि मायालु भेटघाट।', location_en: 'Pokhara, Nepal', location_ne: 'पोखरा, नेपाल', starts_at: null, ends_at: null, capacity: 100, registered_count: 0, registration_type: 'free', fee_amount: 0, currency: 'NPR', status: 'published' },
+  { id: 'young-adult-womens-gathering', slug: 'young-adult-womens-gathering', title_en: "Young Adult Women's Gathering", title_ne: 'युवा वयस्क महिलाहरूको भेटघाट', description_en: 'A welcoming gathering for young adult women to connect, grow in faith, and encourage one another.', description_ne: 'युवा वयस्क महिलाहरूका लागि संगति, विश्वासमा वृद्धि र एकअर्कालाई हौसला दिने आत्मीय भेटघाट।', location_en: 'Pokhara, Nepal', location_ne: 'पोखरा, नेपाल', starts_at: null, ends_at: null, capacity: 100, registered_count: 0, registration_type: 'free', fee_amount: 0, currency: 'NPR', status: 'published' },
+  { id: 'holy-roar-worship-school', slug: 'holy-roar-worship-school', title_en: 'Holy Roar Worship School', title_ne: 'होली रोअर आराधना विद्यालय', description_en: 'A practical worship school for singers, musicians, and worship leaders who want to serve with skill and heart.', description_ne: 'गायक, वाद्यवादक र आराधना अगुवाहरूका लागि सीप र समर्पित हृदयसाथ सेवाका लागि व्यावहारिक आराधना विद्यालय।', location_en: 'Pokhara, Nepal', location_ne: 'पोखरा, नेपाल', starts_at: null, ends_at: null, capacity: 100, registered_count: 0, registration_type: 'free', fee_amount: 0, currency: 'NPR', status: 'published' }
+];
+
+const state = { language: 'en', events: [], selectedEvent: null, usingFallback: false };
 const $ = (selector, parent = document) => parent.querySelector(selector);
 const $$ = (selector, parent = document) => [...parent.querySelectorAll(selector)];
 const eventGrid = $('[data-event-grid]');
@@ -60,6 +66,10 @@ function normalizeEvent(item) {
     payment_instructions_en: pick(event, 'payment_instructions_en', 'paymentInstructionsEn') || '',
     payment_instructions_ne: pick(event, 'payment_instructions_ne', 'paymentInstructionsNe') || ''
   };
+}
+
+function getFallbackEvents() {
+  return fallbackEvents.map(normalizeEvent);
 }
 
 async function request(url, options = {}) {
@@ -121,12 +131,16 @@ async function loadEvents() {
   eventGrid.setAttribute('aria-busy', 'true');
   try {
     const payload = await request('/api/events');
-    state.events = (unwrap(payload) || []).map(normalizeEvent).filter((event) => event.id);
+    const apiEvents = (unwrap(payload) || []).map(normalizeEvent).filter((event) => event.id);
+    state.usingFallback = apiEvents.length === 0;
+    state.events = state.usingFallback ? getFallbackEvents() : apiEvents;
     renderEvents();
+    if (state.usingFallback) showNotice(text('fallbackWarning'));
   } catch (error) {
-    state.events = [];
+    state.usingFallback = true;
+    state.events = getFallbackEvents();
     renderEvents();
-    showNotice(text('fetchError'));
+    showNotice(text('fallbackWarning'));
   }
 }
 
@@ -204,13 +218,14 @@ registrationForm.addEventListener('submit', async (event) => {
   try {
     const payload = await request('/api/events/register', { method: 'POST', body: JSON.stringify({ ...values, language: state.language }) });
     const result = getRegistrationResult(payload);
+    if (!result.id || !result.ticket_code) throw new Error('Registration response was incomplete.');
     registrationDialog.close();
     openConfirmation(result, values);
     const current = state.events.find((item) => item.id === state.selectedEvent?.id);
     if (current) { current.registered_count += 1; }
   } catch (error) {
     const code = error?.payload?.code || error?.payload?.error?.code;
-    errorBox.textContent = code === 'EVENT_FULL' ? text('noEvent') : (error?.payload?.message || error?.payload?.error?.message || text('submitError'));
+    errorBox.textContent = code === 'EVENT_FULL' ? text('noEvent') : text('submitError');
     errorBox.hidden = false;
   } finally {
     submit.disabled = false; submit.removeAttribute('aria-busy'); submit.querySelector('span').textContent = text('confirmPlace');
@@ -223,6 +238,7 @@ function setLanguage(language) {
   $$('[data-i18n]').forEach((node) => { const value = text(node.dataset.i18n); if (value) node.innerHTML = typeof value === 'function' ? value() : value; });
   $$('[data-language-toggle]').forEach((button) => { button.setAttribute('aria-pressed', String(language === 'ne')); button.setAttribute('aria-label', language === 'en' ? 'Switch to Nepali' : 'Switch to English'); });
   if (state.events.length) renderEvents();
+  if (state.usingFallback) showNotice(text('fallbackWarning'));
   if (state.selectedEvent && registrationDialog.open) openRegistration(state.selectedEvent.id);
 }
 
