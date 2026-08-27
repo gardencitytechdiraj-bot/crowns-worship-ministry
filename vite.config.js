@@ -24,4 +24,3 @@ export default defineConfig({
     rollupOptions: { input },
   },
 });
-sed: --: No such file or directory
