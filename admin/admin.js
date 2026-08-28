@@ -12,6 +12,10 @@ const scannerStatus = $('[data-scanner-status]');
 const scannerCameraButton = $('[data-scanner-camera]');
 const scannerCode = $('[data-scanner-code]');
 const scannerState = { detector: null, stream: null, timer: 0, active: false, processing: false };
+const MAX_SOURCE_IMAGE_BYTES = 20 * 1024 * 1024;
+const MAX_OPTIMIZED_IMAGE_BYTES = 3.25 * 1024 * 1024;
+const MAX_IMAGE_DIMENSION = 3000;
+const SUPPORTED_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/avif']);
 
 function escapeHtml(value = '') { return String(value).replace(/[&<>'"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char])); }
 function pick(record, ...keys) { for (const key of keys) if (record?.[key] !== undefined && record?.[key] !== null) return record[key]; return ''; }
@@ -167,6 +171,103 @@ function openEventEditor(eventId = '') {
 function toggleFeeField() { const paid = eventForm.elements.registration_type.value === 'paid'; $('[data-fee-field]').hidden = !paid; eventForm.elements.fee_amount.required = paid; }
 function renderImagePreview(url) { const target = $('[data-image-preview]'); target.innerHTML = url ? `<img src="${escapeHtml(url)}" alt="Event image preview" onerror="this.remove()" />` : '<span aria-hidden="true">▧</span><small>No image selected</small>'; }
 
+function supportedImageFile(file) {
+  if (SUPPORTED_IMAGE_TYPES.has(file.type)) return true;
+  return /\.(?:jpe?g|png|webp|avif)$/i.test(file.name || '');
+}
+
+async function decodeImage(file) {
+  if (typeof window.createImageBitmap === 'function') {
+    try {
+      const bitmap = await window.createImageBitmap(file);
+      if (!bitmap.width || !bitmap.height) {
+        bitmap.close?.();
+        throw new Error('The image has no usable dimensions.');
+      }
+      return { source: bitmap, width: bitmap.width, height: bitmap.height, cleanup: () => bitmap.close?.() };
+    } catch {
+      // Some browsers can select a format but cannot decode it through ImageBitmap.
+    }
+  }
+
+  const objectUrl = URL.createObjectURL(file);
+  const image = new Image();
+  image.decoding = 'async';
+  try {
+    await new Promise((resolve, reject) => {
+      image.onload = resolve;
+      image.onerror = () => reject(new Error('This browser could not decode the selected image.'));
+      image.src = objectUrl;
+    });
+    if (typeof image.decode === 'function') {
+      try { await image.decode(); } catch { /* The load event still confirms usable image data. */ }
+    }
+    if (!image.naturalWidth || !image.naturalHeight) throw new Error('The image has no usable dimensions.');
+    return { source: image, width: image.naturalWidth, height: image.naturalHeight, cleanup: () => { image.src = ''; } };
+  } finally {
+    URL.revokeObjectURL(objectUrl);
+  }
+}
+
+function canvasBlob(canvas, type, quality) {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (!blob) { reject(new Error(`This browser could not create a ${type.replace('image/', '').toUpperCase()} image.`)); return; }
+      if (blob.type && blob.type !== type) { reject(new Error(`${type.replace('image/', '').toUpperCase()} encoding is not supported.`)); return; }
+      resolve(blob);
+    }, type, quality);
+  });
+}
+
+async function optimizeImage(file) {
+  const decoded = await decodeImage(file);
+  let canvas;
+  try {
+    const sourceLongestEdge = Math.max(decoded.width, decoded.height);
+    const dimensionCandidates = [];
+    let longestEdge = Math.min(MAX_IMAGE_DIMENSION, sourceLongestEdge);
+    while (longestEdge >= 1024) {
+      dimensionCandidates.push(Math.round(longestEdge));
+      longestEdge *= 0.84;
+    }
+    if (!dimensionCandidates.length) dimensionCandidates.push(Math.max(1, Math.round(longestEdge)));
+
+    canvas = document.createElement('canvas');
+    const qualityCandidates = [0.92, 0.86, 0.8, 0.74, 0.68, 0.62];
+    for (const candidateLongestEdge of dimensionCandidates) {
+      const scale = Math.min(1, candidateLongestEdge / sourceLongestEdge);
+      canvas.width = Math.max(1, Math.round(decoded.width * scale));
+      canvas.height = Math.max(1, Math.round(decoded.height * scale));
+      const context = canvas.getContext('2d', { alpha: true });
+      if (!context) throw new Error('This browser could not prepare the image for upload.');
+      context.imageSmoothingEnabled = true;
+      context.imageSmoothingQuality = 'high';
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(decoded.source, 0, 0, canvas.width, canvas.height);
+
+      for (const quality of qualityCandidates) {
+        let blob;
+        let encodedType = 'image/webp';
+        try {
+          blob = await canvasBlob(canvas, encodedType, quality);
+        } catch {
+          encodedType = 'image/jpeg';
+          blob = await canvasBlob(canvas, encodedType, quality);
+        }
+        if (blob.size <= MAX_OPTIMIZED_IMAGE_BYTES) {
+          const outputType = blob.type || encodedType;
+          const extension = outputType === 'image/webp' ? 'webp' : 'jpg';
+          return new File([blob], `event-image.${extension}`, { type: outputType, lastModified: Date.now() });
+        }
+      }
+    }
+    throw new Error('This image could not be reduced below 3.5 MB. Please choose a smaller image or crop it before uploading.');
+  } finally {
+    if (canvas) { canvas.width = 0; canvas.height = 0; }
+    decoded.cleanup();
+  }
+}
+
 eventForm.addEventListener('submit', async (event) => {
   event.preventDefault(); const values = Object.fromEntries(new FormData(eventForm).entries()); const errorBox = $('[data-event-error]'); const submit = $('button[type="submit"]', eventForm); submit.disabled = true; errorBox.hidden = true;
   const payload = { slug: adminState.selectedEvent?.slug || slugify(values.title_en), title_en: values.title_en.trim(), title_ne: values.title_ne.trim(), description_en: values.description_en.trim(), description_ne: values.description_ne.trim(), location_en: values.location_en.trim(), location_ne: values.location_ne.trim(), starts_at: isoDate(values.starts_at), ends_at: isoDate(values.ends_at), registration_deadline: isoDate(values.registration_deadline), capacity: Number(values.capacity), registration_type: values.registration_type, fee_amount: values.registration_type === 'paid' ? Number(values.fee_amount) : 0, currency: 'NPR', payment_instructions_en: values.payment_instructions_en.trim(), payment_instructions_ne: values.payment_instructions_ne.trim(), image_url: adminState.imageUrl || null, status: values.status };
@@ -177,7 +278,47 @@ async function archiveEvent(eventId) { if (!window.confirm('Archive this gatheri
 async function updateAttendee(id, changes) { try { await request('/api/admin/registrations', { method: 'PATCH', body: JSON.stringify({ id, ...changes }) }, true); await refreshDashboard(); return true; } catch (error) { setDashboardAlert(errorMessage(error, 'That attendee could not be updated.')); return false; } }
 async function cancelAttendee(id) { if (!window.confirm('Cancel this registration? The seat will become available again.')) return; await updateAttendee(id, { status: 'cancelled', checked_in: false }); }
 
-$('[data-image-input]').addEventListener('change', async (event) => { const file = event.target.files?.[0]; if (!file) return; if (file.size > 5 * 1024 * 1024) { $('[data-event-error]').textContent = 'Please choose an image under 5 MB.'; $('[data-event-error]').hidden = false; return; } const button = $('[data-image-preview]'); button.innerHTML = '<small>Uploading…</small>'; const formData = new FormData(); formData.append('file', file); try { const payload = await request('/api/admin/upload', { method: 'POST', body: formData }, true); adminState.imageUrl = pick(payload, 'image_url', 'imageUrl', 'url') || pick(payload?.data, 'image_url', 'imageUrl', 'url'); if (!adminState.imageUrl) throw new Error('Upload did not return an image URL.'); setFormValue('image_url', adminState.imageUrl); renderImagePreview(adminState.imageUrl); } catch (error) { renderImagePreview(adminState.imageUrl); $('[data-event-error]').textContent = errorMessage(error, 'The image could not be uploaded.'); $('[data-event-error]').hidden = false; } });
+const imageInput = $('[data-image-input]');
+imageInput.addEventListener('change', async (event) => {
+  const file = event.target.files?.[0];
+  const errorBox = $('[data-event-error]');
+  if (!file) return;
+  if (file.size > MAX_SOURCE_IMAGE_BYTES) {
+    errorBox.textContent = 'Please choose a JPG, PNG, WebP, or AVIF image up to 20 MB.';
+    errorBox.hidden = false;
+    event.target.value = '';
+    return;
+  }
+  if (!supportedImageFile(file)) {
+    errorBox.textContent = 'Please choose a JPG, PNG, WebP, or AVIF image.';
+    errorBox.hidden = false;
+    event.target.value = '';
+    return;
+  }
+
+  const preview = $('[data-image-preview]');
+  imageInput.disabled = true;
+  errorBox.hidden = true;
+  preview.innerHTML = '<small>Optimizing image…</small>';
+  try {
+    const optimizedFile = await optimizeImage(file);
+    preview.innerHTML = '<small>Uploading image…</small>';
+    const formData = new FormData();
+    formData.append('file', optimizedFile);
+    const payload = await request('/api/admin/upload', { method: 'POST', body: formData }, true);
+    adminState.imageUrl = pick(payload, 'image_url', 'imageUrl', 'url') || pick(payload?.data, 'image_url', 'imageUrl', 'url');
+    if (!adminState.imageUrl) throw new Error('Upload did not return an image URL.');
+    setFormValue('image_url', adminState.imageUrl);
+    renderImagePreview(adminState.imageUrl);
+  } catch (error) {
+    renderImagePreview(adminState.imageUrl);
+    errorBox.textContent = errorMessage(error, 'The image could not be optimized or uploaded. Try a smaller image.');
+    errorBox.hidden = false;
+  } finally {
+    imageInput.disabled = false;
+    event.target.value = '';
+  }
+});
 
 function scannerMessage(english, nepali) { return `${english} / ${nepali}`; }
 function setScannerStatus(english, nepali) { scannerStatus.textContent = scannerMessage(english, nepali); }
