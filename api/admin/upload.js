@@ -4,6 +4,8 @@ import { requireAdmin } from '../_lib/admin.js';
 import { storagePublicUrl, uploadObject } from '../_lib/supabase.js';
 import { MAX_OPTIMIZED_IMAGE_BYTES, parseImageMultipart } from '../_lib/multipart.js';
 
+export const config = { api: { bodyParser: false } };
+
 const MAX_MULTIPART_BODY_BYTES = MAX_OPTIMIZED_IMAGE_BYTES + 256 * 1024;
 
 export default function handler(req, res) {

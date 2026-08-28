@@ -1,4 +1,4 @@
-const adminState = { language: 'en', authMode: 'login', events: [], attendees: [], sessionToken: sessionStorage.getItem('crowns_admin_token') || '', selectedEvent: null, imageUrl: '' };
+const adminState = { language: 'en', authMode: 'login', events: [], attendees: [], sessionToken: sessionStorage.getItem('crowns_admin_token') || '', selectedEvent: null, imageUrl: '', imageFile: null, imageUploadedFile: null, imageUploadPromise: null, imagePreviewUrl: '' };
 const $ = (selector, parent = document) => parent.querySelector(selector);
 const $$ = (selector, parent = document) => [...parent.querySelectorAll(selector)];
 const eventForm = $('[data-event-form]');
@@ -165,11 +165,14 @@ function renderAttendees() {
 function setFormValue(name, value) { const field = eventForm.elements[name]; if (field) field.value = value ?? ''; }
 function openEventEditor(eventId = '') {
   const existing = adminState.events.find((event) => String(event.id) === String(eventId)); adminState.selectedEvent = existing || null; adminState.imageUrl = existing?.image_url || '';
+  adminState.imageFile = null; adminState.imageUploadedFile = null; adminState.imageUploadPromise = null;
   eventForm.reset(); setFormValue('id', existing?.id || ''); setFormValue('title_en', existing?.title_en); setFormValue('title_ne', existing?.title_ne); setFormValue('description_en', existing?.description_en); setFormValue('description_ne', existing?.description_ne); setFormValue('location_en', existing?.location_en); setFormValue('location_ne', existing?.location_ne); setFormValue('starts_at', localDate(existing?.starts_at)); setFormValue('ends_at', localDate(existing?.ends_at)); setFormValue('registration_deadline', localDate(existing?.registration_deadline)); setFormValue('capacity', existing?.capacity || ''); setFormValue('registration_type', existing?.registration_type || 'free'); setFormValue('fee_amount', existing?.fee_amount || ''); setFormValue('status', existing?.status || 'draft'); setFormValue('payment_instructions_en', existing?.payment_instructions_en); setFormValue('payment_instructions_ne', existing?.payment_instructions_ne); setFormValue('image_url', adminState.imageUrl);
   $('[data-event-dialog-title]').textContent = existing ? 'Edit gathering' : 'New gathering'; $('[data-archive-event]').hidden = !existing || existing.status === 'archived'; $('[data-event-error]').hidden = true; toggleFeeField(); renderImagePreview(adminState.imageUrl); eventDialog.showModal();
 }
 function toggleFeeField() { const paid = eventForm.elements.registration_type.value === 'paid'; $('[data-fee-field]').hidden = !paid; eventForm.elements.fee_amount.required = paid; }
-function renderImagePreview(url) { const target = $('[data-image-preview]'); target.innerHTML = url ? `<img src="${escapeHtml(url)}" alt="Event image preview" onerror="this.remove()" />` : '<span aria-hidden="true">▧</span><small>No image selected</small>'; }
+function releaseImagePreviewUrl() { if (adminState.imagePreviewUrl) URL.revokeObjectURL(adminState.imagePreviewUrl); adminState.imagePreviewUrl = ''; }
+function renderImagePreview(url) { releaseImagePreviewUrl(); const target = $('[data-image-preview]'); target.innerHTML = url ? `<img src="${escapeHtml(url)}" alt="Event image preview" onerror="this.remove()" />` : '<span aria-hidden="true">▧</span><small>No image selected</small>'; }
+function renderLocalImagePreview(file) { releaseImagePreviewUrl(); const url = URL.createObjectURL(file); adminState.imagePreviewUrl = url; $('[data-image-preview]').innerHTML = `<img src="${escapeHtml(url)}" alt="Selected event image preview" />`; }
 
 function supportedImageFile(file) {
   if (SUPPORTED_IMAGE_TYPES.has(file.type)) return true;
@@ -269,9 +272,22 @@ async function optimizeImage(file) {
 }
 
 eventForm.addEventListener('submit', async (event) => {
-  event.preventDefault(); const values = Object.fromEntries(new FormData(eventForm).entries()); const errorBox = $('[data-event-error]'); const submit = $('button[type="submit"]', eventForm); submit.disabled = true; errorBox.hidden = true;
-  const payload = { slug: adminState.selectedEvent?.slug || slugify(values.title_en), title_en: values.title_en.trim(), title_ne: values.title_ne.trim(), description_en: values.description_en.trim(), description_ne: values.description_ne.trim(), location_en: values.location_en.trim(), location_ne: values.location_ne.trim(), starts_at: isoDate(values.starts_at), ends_at: isoDate(values.ends_at), registration_deadline: isoDate(values.registration_deadline), capacity: Number(values.capacity), registration_type: values.registration_type, fee_amount: values.registration_type === 'paid' ? Number(values.fee_amount) : 0, currency: 'NPR', payment_instructions_en: values.payment_instructions_en.trim(), payment_instructions_ne: values.payment_instructions_ne.trim(), image_url: adminState.imageUrl || null, status: values.status };
-  try { await request('/api/events', { method: adminState.selectedEvent ? 'PATCH' : 'POST', body: JSON.stringify(adminState.selectedEvent ? { id: adminState.selectedEvent.id, ...payload } : payload) }, true); eventDialog.close(); await refreshDashboard(); } catch (error) { errorBox.textContent = errorMessage(error, 'The gathering could not be saved. Check the dates and try again.'); errorBox.hidden = false; } finally { submit.disabled = false; }
+  event.preventDefault(); const errorBox = $('[data-event-error]'); const submit = $('button[type="submit"]', eventForm); errorBox.hidden = true;
+  if (!eventForm.checkValidity()) {
+    const invalidField = eventForm.querySelector(':invalid');
+    errorBox.textContent = invalidField?.validationMessage || 'Please complete the highlighted fields.';
+    errorBox.hidden = false;
+    invalidField?.focus();
+    return;
+  }
+  const values = Object.fromEntries(new FormData(eventForm).entries()); submit.disabled = true; submit.setAttribute('aria-busy', 'true');
+  try {
+    if (adminState.imageFile && adminState.imageUploadedFile !== adminState.imageFile) {
+      await (adminState.imageUploadPromise || queueImageUpload(adminState.imageFile));
+    }
+    const payload = { slug: adminState.selectedEvent?.slug || slugify(values.title_en), title_en: values.title_en.trim(), title_ne: values.title_ne.trim(), description_en: values.description_en.trim(), description_ne: values.description_ne.trim(), location_en: values.location_en.trim(), location_ne: values.location_ne.trim(), starts_at: isoDate(values.starts_at), ends_at: isoDate(values.ends_at), registration_deadline: isoDate(values.registration_deadline), capacity: Number(values.capacity), registration_type: values.registration_type, fee_amount: values.registration_type === 'paid' ? Number(values.fee_amount) : 0, currency: 'NPR', payment_instructions_en: values.payment_instructions_en.trim(), payment_instructions_ne: values.payment_instructions_ne.trim(), image_url: adminState.imageUrl || values.image_url || null, status: values.status };
+    await request('/api/events', { method: adminState.selectedEvent ? 'PATCH' : 'POST', body: JSON.stringify(adminState.selectedEvent ? { id: adminState.selectedEvent.id, ...payload } : payload) }, true); eventDialog.close(); await refreshDashboard();
+  } catch (error) { errorBox.textContent = errorMessage(error, 'The gathering could not be saved. Check the dates and try again.'); errorBox.hidden = false; } finally { submit.disabled = false; submit.removeAttribute('aria-busy'); }
 });
 
 async function archiveEvent(eventId) { if (!window.confirm('Archive this gathering? It will no longer appear publicly.')) return; try { await request('/api/events', { method: 'PATCH', body: JSON.stringify({ id: eventId, status: 'archived' }) }, true); await refreshDashboard(); } catch (error) { setDashboardAlert(errorMessage(error, 'This gathering could not be archived.')); } }
@@ -279,6 +295,29 @@ async function updateAttendee(id, changes) { try { await request('/api/admin/reg
 async function cancelAttendee(id) { if (!window.confirm('Cancel this registration? The seat will become available again.')) return; await updateAttendee(id, { status: 'cancelled', checked_in: false }); }
 
 const imageInput = $('[data-image-input]');
+async function uploadSelectedImage(file) {
+  if (adminState.imageFile !== file) return;
+  const preview = $('[data-image-preview]');
+  preview.innerHTML = '<small>Optimizing image…</small>';
+  const optimizedFile = await optimizeImage(file);
+  if (adminState.imageFile !== file) return;
+  preview.innerHTML = '<small>Uploading image…</small>';
+  const formData = new FormData();
+  formData.append('file', optimizedFile);
+  const payload = await request('/api/admin/upload', { method: 'POST', body: formData }, true);
+  if (adminState.imageFile !== file) return;
+  const imageUrl = pick(payload, 'image_url', 'imageUrl', 'url') || pick(payload?.data, 'image_url', 'imageUrl', 'url');
+  if (!imageUrl) throw new Error('Upload did not return an image URL.');
+  adminState.imageUrl = imageUrl;
+  adminState.imageUploadedFile = file;
+  setFormValue('image_url', imageUrl);
+  renderImagePreview(imageUrl);
+}
+function queueImageUpload(file) {
+  const promise = uploadSelectedImage(file);
+  adminState.imageUploadPromise = promise.finally(() => { if (adminState.imageFile === file) adminState.imageUploadPromise = null; });
+  return adminState.imageUploadPromise;
+}
 imageInput.addEventListener('change', async (event) => {
   const file = event.target.files?.[0];
   const errorBox = $('[data-event-error]');
@@ -296,27 +335,21 @@ imageInput.addEventListener('change', async (event) => {
     return;
   }
 
-  const preview = $('[data-image-preview]');
+  adminState.imageFile = file;
+  adminState.imageUploadedFile = null;
+  renderLocalImagePreview(file);
   imageInput.disabled = true;
   errorBox.hidden = true;
-  preview.innerHTML = '<small>Optimizing image…</small>';
   try {
-    const optimizedFile = await optimizeImage(file);
-    preview.innerHTML = '<small>Uploading image…</small>';
-    const formData = new FormData();
-    formData.append('file', optimizedFile);
-    const payload = await request('/api/admin/upload', { method: 'POST', body: formData }, true);
-    adminState.imageUrl = pick(payload, 'image_url', 'imageUrl', 'url') || pick(payload?.data, 'image_url', 'imageUrl', 'url');
-    if (!adminState.imageUrl) throw new Error('Upload did not return an image URL.');
-    setFormValue('image_url', adminState.imageUrl);
-    renderImagePreview(adminState.imageUrl);
+    await queueImageUpload(file);
   } catch (error) {
-    renderImagePreview(adminState.imageUrl);
-    errorBox.textContent = errorMessage(error, 'The image could not be optimized or uploaded. Try a smaller image.');
-    errorBox.hidden = false;
+    if (adminState.imageFile === file) {
+      renderLocalImagePreview(file);
+      errorBox.textContent = errorMessage(error, 'The image could not be optimized or uploaded. Try a smaller image.');
+      errorBox.hidden = false;
+    }
   } finally {
     imageInput.disabled = false;
-    event.target.value = '';
   }
 });
 
