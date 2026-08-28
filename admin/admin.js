@@ -48,6 +48,8 @@ function normalizeAttendee(item) {
 
 function setAuthError(message = '') { const node = $('[data-auth-error]'); node.textContent = message; node.hidden = !message; }
 function setDashboardAlert(message = '') { const node = $('[data-dashboard-alert]'); node.textContent = message; node.hidden = !message; }
+function isSetupRequiredError(error) { return error?.payload?.code === 'SETUP_REQUIRED' || error?.payload?.error === 'SETUP_REQUIRED' || error?.payload?.error?.code === 'SETUP_REQUIRED'; }
+function setupRequiredMessage() { return adminState.language === 'ne' ? 'पहिलो पटक सेटअप आवश्यक छ। एकपटक प्रयोग हुने सेटअप कोड लेख्नुहोस् र एडमिन पासवर्ड छान्नुहोस्।' : 'First-time setup is required. Enter the one-time setup code and choose an admin password.'; }
 
 function setAuthMode(mode) {
   adminState.authMode = mode;
@@ -73,7 +75,7 @@ async function inspectSession() {
     if (authenticated && adminState.sessionToken) { showDashboard(); return; }
     if (setupRequired) setAuthMode('setup');
   } catch (error) {
-    if (error?.payload?.code === 'SETUP_REQUIRED' || error?.payload?.error === 'SETUP_REQUIRED' || error?.payload?.error?.code === 'SETUP_REQUIRED') setAuthMode('setup');
+    if (isSetupRequiredError(error)) setAuthMode('setup');
     if (error.status === 401 || error.status === 403) { adminState.sessionToken = ''; sessionStorage.removeItem('crowns_admin_token'); }
   }
 }
@@ -99,7 +101,13 @@ $('[data-auth-form]').addEventListener('submit', async (event) => {
       if (!token) throw new Error('Sign in did not return a session.');
       adminState.sessionToken = token; sessionStorage.setItem('crowns_admin_token', token); showDashboard();
     }
-  } catch (error) { setAuthError(errorMessage(error, adminState.authMode === 'setup' ? 'Setup could not be completed. Check the code and try again.' : 'Sign in failed. Check your password and try again.')); }
+  } catch (error) {
+    if (adminState.authMode === 'login' && isSetupRequiredError(error)) {
+      form.reset();
+      setAuthMode('setup');
+      setAuthError(setupRequiredMessage());
+    } else setAuthError(errorMessage(error, adminState.authMode === 'setup' ? 'Setup could not be completed. Check the code and try again.' : 'Sign in failed. Check your password and try again.'));
+  }
   finally { submit.disabled = false; submit.removeAttribute('aria-busy'); }
 });
 
