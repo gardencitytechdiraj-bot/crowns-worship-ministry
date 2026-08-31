@@ -6,7 +6,6 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/api/register", "destination": "/api/events/register" },
     { "source": "/events", "destination": "/events/" },
     { "source": "/admin", "destination": "/admin/" }
   ]
