@@ -16,6 +16,7 @@ const MAX_SOURCE_IMAGE_BYTES = 20 * 1024 * 1024;
 const MAX_OPTIMIZED_IMAGE_BYTES = 3.25 * 1024 * 1024;
 const MAX_IMAGE_DIMENSION = 3000;
 const SUPPORTED_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/avif']);
+const ADMIN_EVENTS_ENDPOINT = '/api/admin/events';
 
 function escapeHtml(value = '') { return String(value).replace(/[&<>'"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char])); }
 function pick(record, ...keys) { for (const key of keys) if (record?.[key] !== undefined && record?.[key] !== null) return record[key]; return ''; }
@@ -39,6 +40,7 @@ async function request(url, options = {}, authenticated = false) {
 }
 
 function errorMessage(error, fallback = 'Something went wrong. Please try again.') { return error?.payload?.message || error?.payload?.error?.message || (typeof error?.payload?.error === 'string' ? error.payload.error : '') || error?.message || fallback; }
+function adminEventEndpoint(eventId = '') { return eventId ? `${ADMIN_EVENTS_ENDPOINT}/${encodeURIComponent(String(eventId))}` : ADMIN_EVENTS_ENDPOINT; }
 
 function normalizeEvent(item) {
   const event = item || {};
@@ -163,11 +165,20 @@ function renderAttendees() {
 }
 
 function setFormValue(name, value) { const field = eventForm.elements[name]; if (field) field.value = value ?? ''; }
+function showEventError(errorBox, message) {
+  errorBox.textContent = message;
+  errorBox.hidden = !message;
+  if (!message) return;
+  const modalBody = $('[data-event-modal-body]');
+  modalBody?.scrollTo({ top: 0, behavior: 'smooth' });
+  errorBox.scrollIntoView?.({ behavior: 'smooth', block: 'nearest' });
+  errorBox.focus?.({ preventScroll: true });
+}
 function openEventEditor(eventId = '') {
   const existing = adminState.events.find((event) => String(event.id) === String(eventId)); adminState.selectedEvent = existing || null; adminState.imageUrl = existing?.image_url || '';
   adminState.imageFile = null; adminState.imageUploadedFile = null; adminState.imageUploadPromise = null;
   eventForm.reset(); setFormValue('id', existing?.id || ''); setFormValue('title_en', existing?.title_en); setFormValue('title_ne', existing?.title_ne); setFormValue('description_en', existing?.description_en); setFormValue('description_ne', existing?.description_ne); setFormValue('location_en', existing?.location_en); setFormValue('location_ne', existing?.location_ne); setFormValue('starts_at', localDate(existing?.starts_at)); setFormValue('ends_at', localDate(existing?.ends_at)); setFormValue('registration_deadline', localDate(existing?.registration_deadline)); setFormValue('capacity', existing?.capacity || ''); setFormValue('registration_type', existing?.registration_type || 'free'); setFormValue('fee_amount', existing?.fee_amount || ''); setFormValue('status', existing?.status || 'draft'); setFormValue('payment_instructions_en', existing?.payment_instructions_en); setFormValue('payment_instructions_ne', existing?.payment_instructions_ne); setFormValue('image_url', adminState.imageUrl);
-  $('[data-event-dialog-title]').textContent = existing ? 'Edit gathering' : 'New gathering'; $('[data-archive-event]').hidden = !existing || existing.status === 'archived'; $('[data-event-error]').hidden = true; toggleFeeField(); renderImagePreview(adminState.imageUrl); eventDialog.showModal();
+  $('[data-event-dialog-title]').textContent = existing ? 'Edit gathering' : 'New gathering'; $('[data-archive-event]').hidden = !existing || existing.status === 'archived'; const errorBox = $('[data-event-error]'); errorBox.textContent = ''; errorBox.hidden = true; $$('[aria-invalid="true"]', eventForm).forEach((field) => field.removeAttribute('aria-invalid')); toggleFeeField(); renderImagePreview(adminState.imageUrl); eventDialog.showModal();
 }
 function toggleFeeField() { const paid = eventForm.elements.registration_type.value === 'paid'; $('[data-fee-field]').hidden = !paid; eventForm.elements.fee_amount.required = paid; }
 function releaseImagePreviewUrl() { if (adminState.imagePreviewUrl) URL.revokeObjectURL(adminState.imagePreviewUrl); adminState.imagePreviewUrl = ''; }
@@ -275,8 +286,8 @@ eventForm.addEventListener('submit', async (event) => {
   event.preventDefault(); const errorBox = $('[data-event-error]'); const submit = $('button[type="submit"]', eventForm); errorBox.hidden = true;
   if (!eventForm.checkValidity()) {
     const invalidField = eventForm.querySelector(':invalid');
-    errorBox.textContent = invalidField?.validationMessage || 'Please complete the highlighted fields.';
-    errorBox.hidden = false;
+    invalidField?.setAttribute('aria-invalid', 'true');
+    showEventError(errorBox, invalidField?.validationMessage || 'Please complete the highlighted fields.');
     invalidField?.focus();
     return;
   }
@@ -286,11 +297,13 @@ eventForm.addEventListener('submit', async (event) => {
       await (adminState.imageUploadPromise || queueImageUpload(adminState.imageFile));
     }
     const payload = { slug: adminState.selectedEvent?.slug || slugify(values.title_en), title_en: values.title_en.trim(), title_ne: values.title_ne.trim(), description_en: values.description_en.trim(), description_ne: values.description_ne.trim(), location_en: values.location_en.trim(), location_ne: values.location_ne.trim(), starts_at: isoDate(values.starts_at), ends_at: isoDate(values.ends_at), registration_deadline: isoDate(values.registration_deadline), capacity: Number(values.capacity), registration_type: values.registration_type, fee_amount: values.registration_type === 'paid' ? Number(values.fee_amount) : 0, currency: 'NPR', payment_instructions_en: values.payment_instructions_en.trim(), payment_instructions_ne: values.payment_instructions_ne.trim(), image_url: adminState.imageUrl || values.image_url || null, status: values.status };
-    await request('/api/events', { method: adminState.selectedEvent ? 'PATCH' : 'POST', body: JSON.stringify(adminState.selectedEvent ? { id: adminState.selectedEvent.id, ...payload } : payload) }, true); eventDialog.close(); await refreshDashboard();
-  } catch (error) { errorBox.textContent = errorMessage(error, 'The gathering could not be saved. Check the dates and try again.'); errorBox.hidden = false; } finally { submit.disabled = false; submit.removeAttribute('aria-busy'); }
+    const editing = Boolean(adminState.selectedEvent?.id);
+    await request(adminEventEndpoint(editing ? adminState.selectedEvent.id : ''), { method: editing ? 'PATCH' : 'POST', body: JSON.stringify(payload) }, true); eventDialog.close(); await refreshDashboard();
+  } catch (error) { showEventError(errorBox, errorMessage(error, 'The gathering could not be saved. Check the dates and try again.')); } finally { submit.disabled = false; submit.removeAttribute('aria-busy'); }
 });
+eventForm.addEventListener('input', (event) => { if (event.target.matches('input, select, textarea')) event.target.removeAttribute('aria-invalid'); });
 
-async function archiveEvent(eventId) { if (!window.confirm('Archive this gathering? It will no longer appear publicly.')) return; try { await request('/api/events', { method: 'PATCH', body: JSON.stringify({ id: eventId, status: 'archived' }) }, true); await refreshDashboard(); } catch (error) { setDashboardAlert(errorMessage(error, 'This gathering could not be archived.')); } }
+async function archiveEvent(eventId) { if (!window.confirm('Archive this gathering? It will no longer appear publicly.')) return; try { await request(adminEventEndpoint(eventId), { method: 'DELETE' }, true); await refreshDashboard(); } catch (error) { setDashboardAlert(errorMessage(error, 'This gathering could not be archived.')); } }
 async function updateAttendee(id, changes) { try { await request('/api/admin/registrations', { method: 'PATCH', body: JSON.stringify({ id, ...changes }) }, true); await refreshDashboard(); return true; } catch (error) { setDashboardAlert(errorMessage(error, 'That attendee could not be updated.')); return false; } }
 async function cancelAttendee(id) { if (!window.confirm('Cancel this registration? The seat will become available again.')) return; await updateAttendee(id, { status: 'cancelled', checked_in: false }); }
 
