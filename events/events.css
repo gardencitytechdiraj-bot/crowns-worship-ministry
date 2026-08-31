@@ -49,7 +49,8 @@ h1 em { color: var(--coral); font-style: normal; }
 .text-link { display: inline-flex; align-items: center; gap: 12px; color: var(--ink); font-size: .85rem; font-weight: 700; text-decoration: none; }
 .text-link span:last-child { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid var(--ink); border-radius: 50%; transition: transform .2s ease; }
 .text-link:hover span:last-child { transform: translateY(3px); }
-.hero-art { position: relative; width: min(100%, 470px); aspect-ratio: 1; justify-self: end; overflow: hidden; border-radius: 48% 52% 50% 43%; background: var(--teal); transform: rotate(7deg); }
+.hero-art { position: relative; width: min(100%, 470px); aspect-ratio: 1131 / 1600; justify-self: end; overflow: hidden; border: 1px solid rgba(20,35,35,.12); border-radius: 28px; background: var(--teal); box-shadow: 0 22px 50px rgba(20,35,35,.16); }
+.hero-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .art-orbit { position: absolute; border: 1px solid rgba(255,255,255,.3); border-radius: 50%; transform: rotate(-28deg); }
 .orbit-one { inset: 10% -12% 12% 16%; }
 .orbit-two { inset: 23% 11% 3% -17%; border-color: rgba(242,197,107,.58); }
