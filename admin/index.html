@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#182426" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Admin portal | Crown's Worship Ministry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./admin.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="admin-header">
+        <a class="brand" href="/events/" aria-label="Back to public gatherings"><span class="brand-mark">✦</span><span><strong>CROWN'S</strong><small>Ministry operations</small></span></a>
+        <div class="header-right"><span class="secure-label"><span class="secure-dot"></span> Private portal</span><button class="language-toggle" type="button" data-language-toggle aria-pressed="false">नेपाली <span>/</span> EN</button><button class="logout-button" type="button" data-logout hidden>Sign out</button></div>
+      </header>
+
+      <main>
+        <section class="auth-view" data-auth-view>
+          <div class="auth-intro"><p class="eyebrow">Crown's Worship Ministry</p><h1 data-auth-title>Make the room ready.</h1><p data-auth-intro>Manage gatherings, welcome guests, and keep every seat accounted for.</p></div>
+          <div class="auth-card">
+            <div class="auth-card-top"><span class="lock-icon" aria-hidden="true">⌑</span><div><h2 data-auth-card-title>Sign in</h2><p data-auth-card-subtitle>Use your ministry admin password.</p></div></div>
+            <div class="auth-tabs" role="tablist" aria-label="Admin access"><button class="auth-tab is-active" type="button" role="tab" aria-selected="true" data-auth-mode="login">Sign in</button><button class="auth-tab" type="button" role="tab" aria-selected="false" data-auth-mode="setup">First-time setup</button></div>
+            <form class="auth-form" data-auth-form>
+              <label class="field setup-only" data-setup-field hidden><span>Setup code</span><input name="setup_code" autocomplete="one-time-code" placeholder="Enter the code you received" /></label>
+              <label class="field"><span data-password-label>Password</span><input name="password" type="password" autocomplete="current-password" required minlength="12" placeholder="At least 12 characters" /></label>
+              <label class="field setup-only" data-setup-field hidden><span>Confirm password</span><input name="confirm_password" type="password" autocomplete="new-password" minlength="12" placeholder="Repeat the password" /></label>
+              <div class="auth-error" data-auth-error role="alert" hidden></div>
+              <button class="primary-button" type="submit" data-auth-submit><span data-auth-submit-label>Sign in securely</span></button>
+              <p class="auth-note" data-auth-note>Sessions expire after 12 hours. Your password is never stored in this browser.</p>
+            </form>
+          </div>
+        </section>
+
+        <section class="dashboard-view" data-dashboard-view hidden>
+          <div class="dashboard-heading"><div><p class="eyebrow">Operations desk</p><h1>Keep the room ready.</h1><p class="dashboard-lede">Create a clear invitation, watch the numbers, and welcome each person by name.</p></div><button class="primary-button compact" type="button" data-new-event>+ <span>New gathering</span></button></div>
+          <div class="dashboard-alert" data-dashboard-alert role="status" aria-live="polite" hidden></div>
+          <div class="stats-grid"><div class="stat-card"><span class="stat-label">Published gatherings</span><strong data-stat-events>—</strong><span class="stat-caption">open invitations</span></div><div class="stat-card accent"><span class="stat-label">Confirmed guests</span><strong data-stat-attendees>—</strong><span class="stat-caption">across all gatherings</span></div><div class="stat-card"><span class="stat-label">Checked in</span><strong data-stat-checked-in>—</strong><span class="stat-caption">welcomed at the door</span></div><div class="stat-card"><span class="stat-label">Open seats</span><strong data-stat-seats>—</strong><span class="stat-caption">remaining capacity</span></div></div>
+          <div class="dashboard-tabs" role="tablist" aria-label="Portal sections"><button class="dashboard-tab is-active" type="button" data-dashboard-tab="events" role="tab" aria-selected="true">Gatherings</button><button class="dashboard-tab" type="button" data-dashboard-tab="attendees" role="tab" aria-selected="false">Attendees</button></div>
+          <section class="panel" data-panel="events"><div class="panel-header"><div><h2>Gatherings</h2><p>Publish and shape the next invitation.</p></div><button class="ghost-button" type="button" data-new-event>+ New gathering</button></div><div class="table-wrap"><table class="data-table events-table"><thead><tr><th>Gathering</th><th>When</th><th>Seats</th><th>Status</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody data-events-table></tbody></table></div><div class="table-empty" data-events-empty hidden><span aria-hidden="true">◌</span><p>No gatherings yet. Start with an invitation your people can feel.</p><button class="secondary-button" type="button" data-new-event>Create first gathering</button></div></section>
+          <section class="panel" data-panel="attendees" hidden><div class="panel-header attendee-header"><div><h2>Attendees</h2><p>Search, verify, and welcome every guest.</p></div><div class="attendee-actions"><button class="primary-button compact" type="button" data-scan-ticket>Scan ticket <span aria-hidden="true">⌁</span></button><button class="ghost-button" type="button" data-download-csv>↓ CSV</button><button class="ghost-button" type="button" data-print-attendees>Print</button></div></div><div class="filter-bar"><label class="search-field"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search name, phone, or ticket code" data-attendee-search /></label><select data-attendee-event aria-label="Filter by gathering"><option value="">All gatherings</option></select><select data-attendee-status aria-label="Filter by status"><option value="">All statuses</option><option value="confirmed">Confirmed</option><option value="cancelled">Cancelled</option></select><select data-attendee-checkin aria-label="Filter by check-in"><option value="">All check-in</option><option value="checked_in">Checked in</option><option value="not_checked_in">Not checked in</option></select></div><div class="manual-checkin"><div><span class="manual-icon" aria-hidden="true">✓</span><div><strong>Quick check-in</strong><small>Enter a ticket code to welcome a guest.</small></div></div><div class="manual-input"><input type="text" placeholder="CWM-XXXXXXXXXXXX" data-ticket-search /><button class="primary-button compact" type="button" data-manual-checkin>Check in</button></div></div><div class="table-wrap"><table class="data-table attendees-table"><thead><tr><th>Guest</th><th>Gathering</th><th>Payment</th><th>Check-in</th><th>Status</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody data-attendees-table></tbody></table></div><div class="table-empty" data-attendees-empty hidden><span aria-hidden="true">⌕</span><p>No attendees match this view.</p></div></section>
+        </section>
+      </main>
+      <footer class="admin-footer"><span>© <span data-current-year></span> Crown's Worship Ministry</span><a href="/events/">View public gatherings ↗</a></footer>
+    </div>
+
+    <dialog class="modal scanner-modal" data-scanner-dialog aria-labelledby="scanner-title" aria-describedby="scanner-description">
+      <div class="modal-inner">
+        <button class="modal-close" type="button" data-close-scanner aria-label="Close ticket scanner">×</button>
+        <div class="modal-heading">
+          <p class="eyebrow">Door check-in · ढोका चेक-इन</p>
+          <h2 id="scanner-title">Scan ticket</h2>
+          <p id="scanner-description">Use the camera to read a ticket QR code, or enter the code below.</p>
+        </div>
+        <div class="scanner-preview" data-scanner-preview hidden>
+          <video data-scanner-video autoplay muted playsinline aria-label="Live ticket QR camera preview"></video>
+          <span class="scanner-frame" aria-hidden="true"></span>
+        </div>
+        <p class="scanner-status" data-scanner-status role="status" aria-live="polite">Camera access starts only when you choose Scan ticket.</p>
+        <div class="scanner-actions">
+          <button class="primary-button compact" type="button" data-scanner-camera>Try camera again</button>
+          <button class="secondary-button" type="button" data-close-scanner>Close</button>
+        </div>
+        <div class="scanner-manual">
+          <label class="field"><span>Ticket code · टिकट कोड</span><input type="text" data-scanner-code autocomplete="off" autocapitalize="characters" placeholder="CWM-XXXXXXXXXXXX" /></label>
+          <button class="ghost-button" type="button" data-scanner-manual>Check in code · कोडबाट चेक-इन</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="modal event-modal" data-event-dialog aria-labelledby="event-dialog-title" aria-describedby="event-dialog-description">
+      <div class="modal-inner">
+        <form class="event-form" data-event-form novalidate>
+          <header class="modal-header">
+            <div class="modal-heading">
+              <p class="eyebrow">Gathering editor</p>
+              <h2 id="event-dialog-title" data-event-dialog-title>New gathering</h2>
+              <p id="event-dialog-description">Make the invitation clear in both languages.</p>
+            </div>
+            <button class="modal-close" type="button" data-close-event aria-label="Close event editor">×</button>
+          </header>
+          <div class="modal-body" data-event-modal-body>
+            <input type="hidden" name="id" />
+            <div class="modal-error" data-event-error role="alert" aria-live="assertive" tabindex="-1" hidden></div>
+            <div class="form-section"><div class="section-number">01</div><div><h3>Invitation</h3><p>What will people see first?</p></div></div>
+            <div class="field-grid">
+              <label class="field field-span-2"><span>Event title · English</span><input name="title_en" required maxlength="180" placeholder="Holy Roar worship training" /></label>
+              <label class="field field-span-2"><span>कार्यक्रमको शीर्षक · नेपाली</span><input name="title_ne" required maxlength="180" placeholder="Holy Roar आराधना तालिम" /></label>
+              <label class="field"><span>Description · English</span><textarea name="description_en" rows="4" maxlength="1000" placeholder="A practical day for worship leaders and teams."></textarea></label>
+              <label class="field"><span>विवरण · नेपाली</span><textarea name="description_ne" rows="4" maxlength="1000" placeholder="आराधना अगुवा र टोलीका लागि व्यावहारिक दिन।"></textarea></label>
+              <label class="field"><span>Location · English</span><input name="location_en" required placeholder="Ranipouwa, Pokhara" /></label>
+              <label class="field"><span>स्थान · नेपाली</span><input name="location_ne" required placeholder="रणिपौवा, पोखरा" /></label>
+            </div>
+            <div class="form-section"><div class="section-number">02</div><div><h3>Time & seats</h3><p>Give people the practical details.</p></div></div>
+            <div class="field-grid">
+              <label class="field"><span>Starts / सुरु हुने मिति <small>(optional / वैकल्पिक)</small></span><input name="starts_at" type="datetime-local" /><small class="field-help">Leave blank until the date is confirmed. Public listings will show “Date to be announced” / “मिति घोषणा गरिनेछ”.</small></label>
+              <label class="field"><span>Ends <small>(optional)</small></span><input name="ends_at" type="datetime-local" /></label>
+              <label class="field"><span>Registration deadline <small>(optional)</small></span><input name="registration_deadline" type="datetime-local" /></label>
+              <label class="field"><span>Capacity</span><input name="capacity" type="number" min="1" step="1" required placeholder="100" /></label>
+              <label class="field"><span>Registration type</span><select name="registration_type"><option value="free">Free</option><option value="paid">Paid</option></select></label>
+              <label class="field" data-fee-field hidden><span>Fee (NPR)</span><input name="fee_amount" type="number" min="1" step="0.01" placeholder="500" /></label>
+              <label class="field"><span>Status</span><select name="status"><option value="draft">Draft</option><option value="published">Published</option><option value="closed">Closed</option><option value="archived">Archived</option></select></label>
+            </div>
+            <div class="form-section"><div class="section-number">03</div><div><h3>Visual & payment</h3><p>One image and one clear next step.</p></div></div>
+            <div class="upload-row"><div class="image-preview" data-image-preview><span aria-hidden="true">▧</span><small>No image selected</small></div><div><label class="upload-button" for="event-image">Upload image</label><input id="event-image" type="file" accept="image/jpeg,image/png,image/webp,image/avif" data-image-input /><p class="field-help">JPG, PNG, WebP or AVIF · source files up to 20 MB are optimized automatically before upload.</p></div></div>
+            <label class="field"><span>Payment instructions · English <small>(paid events)</small></span><textarea name="payment_instructions_en" rows="3" placeholder="Pay via eSewa and add your reference above."></textarea></label>
+            <label class="field"><span>भुक्तानी निर्देशन · नेपाली <small>(शुल्क लाग्ने कार्यक्रम)</small></span><textarea name="payment_instructions_ne" rows="3" placeholder="eSewa मार्फत भुक्तानी गरेर सन्दर्भ थप्नुहोस्।"></textarea></label>
+            <input type="hidden" name="image_url" />
+          </div>
+          <footer class="modal-actions">
+            <button class="danger-button" type="button" data-archive-event hidden>Archive</button>
+            <span aria-hidden="true"></span>
+            <button class="secondary-button" type="button" data-close-event>Cancel</button>
+            <button class="primary-button compact" type="submit">Save event</button>
+          </footer>
+        </form>
+      </div>
+    </dialog>
+
+    <script src="./admin.js" type="module"></script>
+  </body>
+</html>

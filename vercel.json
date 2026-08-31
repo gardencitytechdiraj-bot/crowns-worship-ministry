@@ -2,5 +2,11 @@
   "buildCommand": "pnpm run build",
   "installCommand": "pnpm install --frozen-lockfile",
   "outputDirectory": "dist",
-  "framework": "vite"
+  "framework": "vite",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/events", "destination": "/events/" },
+    { "source": "/admin", "destination": "/admin/" }
+  ]
 }

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f3ec" />
+    <meta name="description" content="Find the next Crown's Worship Ministry gathering in Nepal." />
+    <title>Gatherings | Crown's Worship Ministry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./events.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#events">Skip to events</a>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="/" aria-label="Crown's Worship Ministry home">
+          <span class="brand-mark">✦</span>
+          <span><strong>CROWN'S</strong><small>Worship Ministry</small></span>
+        </a>
+        <nav class="header-nav" aria-label="Page navigation">
+          <a href="/">Home</a>
+          <a class="is-current" href="#events">Gatherings</a>
+          <a class="admin-link" href="/admin/">Admin portal <span aria-hidden="true">↗</span></a>
+        </nav>
+        <button class="language-toggle" type="button" data-language-toggle aria-label="Switch to Nepali" aria-pressed="false">नेपाली <span aria-hidden="true">/</span> EN</button>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="page-title">
+          <div class="hero-copy">
+            <p class="eyebrow" data-i18n="eyebrow">Crown's Worship Ministry · Nepal</p>
+            <h1 id="page-title"><span data-i18n="heroTitle">Make room for<br /><em>the next song.</em></span></h1>
+            <p class="hero-intro" data-i18n="heroIntro">Gather in the room, learn together, and carry worship back to your people. Find an upcoming Crown's gathering and save your place.</p>
+            <a class="text-link" href="#events"><span data-i18n="heroLink">Explore gatherings</span> <span aria-hidden="true">↓</span></a>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="art-orbit orbit-one"></div>
+            <div class="art-orbit orbit-two"></div>
+            <div class="art-sun"></div>
+            <div class="art-word">COME<br /><span>AS YOU ARE</span></div>
+            <div class="art-note note-one">♪</div>
+            <div class="art-note note-two">•</div>
+          </div>
+        </section>
+
+        <section class="event-section" id="events" aria-labelledby="events-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="upNext">What's next</p>
+              <h2 id="events-title" data-i18n="eventsTitle">Gather at the source.</h2>
+            </div>
+            <p class="section-note" data-i18n="sectionNote">One place for every room, training day, and Holy Roar gathering.</p>
+          </div>
+          <div class="event-toolbar">
+            <div class="toolbar-note"><span class="status-dot"></span><span data-i18n="liveNote">Registration is live</span></div>
+            <button class="refresh-button" type="button" data-refresh><span aria-hidden="true">↻</span> <span data-i18n="refresh">Refresh</span></button>
+          </div>
+          <div class="notice" data-page-notice role="status" aria-live="polite" hidden></div>
+          <div class="event-grid" data-event-grid aria-live="polite" aria-busy="true"></div>
+          <div class="empty-state" data-empty-state hidden>
+            <span class="empty-icon" aria-hidden="true">◌</span>
+            <h3 data-i18n="emptyTitle">The next room is taking shape.</h3>
+            <p data-i18n="emptyBody">No gatherings are open right now. Check back soon or follow Crown's for the next invitation.</p>
+          </div>
+        </section>
+
+        <section class="closing-note" aria-label="Ministry note">
+          <p class="closing-mark" aria-hidden="true">✦</p>
+          <p data-i18n="closing">Worship is not a moment we attend.<br /><strong>It is a life we carry.</strong></p>
+        </section>
+      </main>
+      <footer class="site-footer">
+        <span>© <span data-current-year></span> Crown's Worship Ministry</span>
+        <span>Pokhara, Nepal · <a href="mailto:crownsministry.np@gmail.com">Say hello</a></span>
+      </footer>
+    </div>
+
+    <dialog class="modal" data-registration-dialog aria-labelledby="registration-title">
+      <div class="modal-inner">
+        <button class="modal-close" type="button" data-close-registration aria-label="Close registration">×</button>
+        <div class="modal-heading">
+          <p class="eyebrow" data-i18n="savePlace">Save your place</p>
+          <h2 id="registration-title" data-registration-title>Join the gathering.</h2>
+          <p data-registration-meta></p>
+        </div>
+        <form class="registration-form" data-registration-form>
+          <input type="hidden" name="event_id" />
+          <div class="form-section-label"><span>01</span> <span data-i18n="yourDetails">Your details</span></div>
+          <div class="field-grid">
+            <label class="field field-span-2"><span data-i18n="nameLabel">Full name</span><input name="full_name" autocomplete="name" required minlength="2" placeholder="Your full name" /></label>
+            <label class="field"><span data-i18n="phoneLabel">Mobile number</span><input name="phone" type="tel" autocomplete="tel" required placeholder="98XXXXXXXX" /></label>
+            <label class="field"><span data-i18n="emailLabel">Email <small>(optional)</small></span><input name="email" type="email" autocomplete="email" placeholder="you@example.com" /></label>
+            <label class="field"><span data-i18n="districtLabel">District / city</span><input name="district_city" required placeholder="Pokhara" /></label>
+            <label class="field"><span data-i18n="churchLabel">Church / community <small>(optional)</small></span><input name="church_name" placeholder="Your church or community" /></label>
+            <label class="field"><span data-i18n="ageLabel">Age group <small>(optional)</small></span><select name="age_group"><option value="">Prefer not to say</option><option>Under 18</option><option>18–25</option><option>26–40</option><option>41+</option></select></label>
+            <label class="field"><span data-i18n="genderLabel">Gender <small>(optional)</small></span><select name="gender"><option value="">Prefer not to say</option><option>Female</option><option>Male</option><option>Non-binary</option><option>Prefer not to say</option></select></label>
+          </div>
+          <div class="payment-fields" data-payment-fields hidden>
+            <div class="form-section-label"><span>02</span> <span data-i18n="paymentDetails">Payment details</span></div>
+            <p class="payment-hint" data-payment-hint></p>
+            <label class="field"><span data-i18n="paymentRef">Payment reference <small>(optional)</small></span><input name="payment_reference" placeholder="Transaction ID or note" /></label>
+          </div>
+          <label class="consent-field"><input type="checkbox" required /> <span data-i18n="consent">I agree to receive event updates from Crown's Worship Ministry.</span></label>
+          <div class="form-error" data-form-error role="alert" hidden></div>
+          <button class="primary-button" type="submit"><span data-i18n="confirmPlace">Confirm my place</span> <span aria-hidden="true">→</span></button>
+          <p class="form-footnote" data-i18n="formFootnote">Your phone number helps us prevent duplicate registrations. We will only use your details for this gathering.</p>
+        </form>
+      </div>
+    </dialog>
+
+    <dialog class="modal confirmation-modal" data-confirmation-dialog aria-labelledby="confirmation-title">
+      <div class="modal-inner">
+        <button class="modal-close" type="button" data-close-confirmation aria-label="Close confirmation">×</button>
+        <div class="confirmation-top"><span class="success-badge" aria-hidden="true">✓</span><p class="eyebrow" data-i18n="placeSaved">Place saved</p></div>
+        <h2 id="confirmation-title" data-i18n="ticketTitle">See you in the room.</h2>
+        <p class="confirmation-lede" data-i18n="ticketIntro">Keep this ticket handy when you arrive. A copy of the code is your printable fallback.</p>
+        <div class="ticket-card">
+          <div class="ticket-details"><p class="ticket-label" data-i18n="ticketFor">Ticket for</p><h3 data-ticket-name></h3><p data-ticket-event></p><p class="ticket-meta" data-ticket-meta></p></div>
+          <div class="ticket-divider"></div>
+          <div class="qr-area"><div class="qr-code" data-qr aria-label="Ticket QR code"></div><p class="ticket-code" data-ticket-code></p><p class="qr-fallback-note" data-i18n="qrFallback">If your camera cannot scan, show this code at check-in.</p></div>
+        </div>
+        <div class="confirmation-actions"><button class="primary-button" type="button" data-print-ticket><span data-i18n="printTicket">Print ticket</span> <span aria-hidden="true">↗</span></button><button class="secondary-button" type="button" data-register-another data-i18n="registerAnother">Register someone else</button></div>
+      </div>
+    </dialog>
+
+    <script src="./events.js" type="module"></script>
+  </body>
+</html>
