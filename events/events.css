@@ -29,6 +29,7 @@ button { cursor: pointer; }
 .site-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 26px 0; border-bottom: 1px solid var(--line); }
 .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; letter-spacing: .01em; }
 .brand-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--teal); color: var(--gold); font-size: 1.1rem; }
+.brand-mark img { display: block; width: 28px; height: 28px; object-fit: contain; }
 .brand strong, .brand small { display: block; line-height: 1.05; }
 .brand strong { font-family: Manrope, sans-serif; font-size: .82rem; letter-spacing: .16em; }
 .brand small { margin-top: 4px; color: var(--muted); font-size: .7rem; }
